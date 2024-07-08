@@ -1,0 +1,47 @@
+<!-- src/app/admin-dashboard/admin-dashboard.component.html -->
+<div class="course-list container1">
+    <div class="header-container1">
+      <h2>Courses</h2>
+      <!-- <button class="btn1 btn-primary1" routerLink="/createcourse">Add New Course</button> -->
+    </div>
+    <div class="form-group1">
+      <input
+        id="search"
+        class="form-control1"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="applyFilter($event)"
+        placeholder="Search courses..."
+      />
+    </div>
+  
+    <table class="content-table">
+      <thead>
+        <tr>
+          <th>Course Name</th>
+          <th>Course Code</th>
+          <th>Institution</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let course of filteredCourses">
+          <td>{{ course.name }}</td>
+          <td>{{ course.code }}</td>
+          <td>{{ course.institution }}</td>
+          <td>
+            <button mat-icon-button color="primary" (click)="viewCourse(course.id)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" (click)="openUpdateDialog(course)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="deleteCourse(course.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <mat-paginator [length]="filteredCourses.length" [pageSize]="10"></mat-paginator>
+  </div>
+  

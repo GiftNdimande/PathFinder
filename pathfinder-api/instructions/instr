@@ -1,0 +1,11 @@
+sudo docker build -t pathfinder-app .
+#docker build -t pathfinder-app .
+sudo docker run -p 8080:8080 pathfinder-app
+az login
+az acr create --resource-group <resource-group-name> --name <registry-name> --sku Basic
+az acr login --name <registry-name>
+docker tag pathfinder-app <registry-name>.azurecr.io/pathfinder-app:v1
+docker push <registry-name>.azurecr.io/pathfinder-app:v1
+az appservice plan create --name <appservice-plan-name> --resource-group <resource-group-name> --sku B1 --is-linux
+az webapp create --resource-group <resource-group-name> --plan <appservice-plan-name> --name <webapp-name> --deployment-container-image-name <registry-name>.azurecr.io/pathfinder-app:v1
+az webapp config container set --name <webapp-name> --resource-group <resource-group-name> --docker-custom-image-name <registry-name>.azurecr.io/pathfinder-app:v1 --docker-registry-server-url https://<registry-name>.azurecr.io --docker-registry-server-user <username> --docker-registry-server-password <password>
